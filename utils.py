@@ -80,21 +80,17 @@ async def download_audio_from_url(url):
 
 
 async def process_file_attachment(ctx, file_name):
-    # Check if the message has attachments
     if len(ctx.message.attachments) == 0:
         await ctx.send("Please provide an audio file attachment.")
         return None
 
-    # Get the first attachment
     attachment = ctx.message.attachments[0]
 
-    # Check if the attachment is an audio file (you can add more audio file extensions if needed)
     allowed_extensions = ['.mp3', '.wav', '.ogg']
     if not any(attachment.filename.endswith(ext) for ext in allowed_extensions):
         await ctx.send("Unsupported file format. Please provide an audio file (e.g., .mp3).")
         return None
 
-    # Download the attachment and save it as a temporary file
     file_path = f"temp/{attachment.filename}"
     await attachment.save(file_path)
 
@@ -103,5 +99,5 @@ async def process_file_attachment(ctx, file_name):
 
 def clean_audio_url(audio_url):
     parsed_url = urlparse(audio_url)
-    clean_url = urlunparse(parsed_url._replace(query=''))  # Remove query parameters
+    clean_url = urlunparse(parsed_url._replace(query=''))
     return clean_url
